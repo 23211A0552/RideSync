@@ -14,13 +14,11 @@ exports.verifyToken = async (req, res, next) => {
 
   try {
     // Verify token with Firebase admin
-    // const decodedToken = await admin.auth().verifyIdToken(token);
-    // req.user = decodedToken;
-    
-    // Mock user for now since firebase admin lacks proper credentials
-    req.user = { uid: 'mock_user_456', email: 'mock@example.com' };
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.user = decodedToken;
     next();
   } catch (error) {
+    console.error('Token verification error:', error.message);
     res.status(401).json({ success: false, message: 'Invalid token' });
   }
 };
